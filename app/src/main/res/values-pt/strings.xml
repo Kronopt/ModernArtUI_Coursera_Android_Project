@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ModernArtUI (Coursera, Lab5)</string>
+    <string name="information">Mais Informação</string>
+    <string name="uis_online">Há Interfaces de Utilizador Modernos disponíveis na internet.</string>
+    <string name="click_to_check">Clique "OK" para averiguar!</string>
+    <string name="cancel_button">Cancelar</string>
+</resources>
