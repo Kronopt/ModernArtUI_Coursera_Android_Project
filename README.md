@@ -6,3 +6,6 @@ This is an [Android Studio Project](https://developer.android.com/studio/index.h
 
 ### How to run
 If you imported the project to Android Studio, you can run the app (`Shift+F10`) on an emulator or a physical device. Otherwise you can download the APK from the [releases page](https://github.com/Kronopt/ModernArtUI_Coursera_Android_Project/releases) and install it on your device.
+
+### Note
+Launcher icons formated using [Launcher icon generator](https://romannurik.github.io/AndroidAssetStudio/icons-launcher.html).
