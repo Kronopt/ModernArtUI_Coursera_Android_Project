@@ -43,7 +43,9 @@ public class MainActivity extends Activity {
         final LinearLayout rect9 = (LinearLayout) findViewById((R.id.rect9));
         final LinearLayout rect10 = (LinearLayout) findViewById((R.id.rect10));
 
-        // Initial rectangle colors (only needed for colored rectangles)
+        // Initial rectangle colors
+        final int rect1Color = ((ColorDrawable) rect1.getBackground()).getColor();
+        final int rect2Color = ((ColorDrawable) rect2.getBackground()).getColor();
         final int rect3Color = ((ColorDrawable) rect3.getBackground()).getColor();
         final int rect4Color = ((ColorDrawable) rect4.getBackground()).getColor();
         final int rect5Color = ((ColorDrawable) rect5.getBackground()).getColor();
@@ -53,90 +55,50 @@ public class MainActivity extends Activity {
         final int rect9Color = ((ColorDrawable) rect9.getBackground()).getColor();
         final int rect10Color = ((ColorDrawable) rect10.getBackground()).getColor();
 
+        // Rectangle Array
+        final LinearLayout[] rectangles = {rect1, rect2, rect3, rect4, rect5, rect6, rect7, rect8,
+                rect9, rect10};
+
+        // Initial rectangle colors Array
+        final int[] initialRectangleColors = {rect1Color, rect2Color, rect3Color, rect4Color,
+                rect5Color, rect6Color, rect7Color, rect8Color, rect9Color, rect10Color};
+
         // SeekBar listener
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-                /* Black -> White
-                Convert Layout color to HSV
-                Gradually convert black to white by changing the V in HSV
-                Convert HSV to Color again and set the new color as background of the Layout
-                */
-                float[] rect1HSV = {0, 0, 0};
-                Color.colorToHSV(((ColorDrawable) rect1.getBackground()).getColor(), rect1HSV);
-                rect1HSV[2] = (float) (progress * 0.01);
-                int rect1ColorNew = Color.HSVToColor(rect1HSV);
-                rect1.setBackgroundColor(rect1ColorNew);
+                for (int i=0; i<10; i++) {
+                    // Convert color to HSV
+                    float[] rectHSV = {0, 0, 0};
+                    Color.colorToHSV(initialRectangleColors[i], rectHSV);
 
-                /* White -> Black
-                Same as before but in reverse
-                */
-                float[] rect2HSV = {0, 0, 0};
-                Color.colorToHSV(((ColorDrawable) rect2.getBackground()).getColor(), rect2HSV);
-                rect2HSV[2] = (float) (1.0 - progress * 0.01);
-                int rect2ColorNew = Color.HSVToColor(rect2HSV);
-                rect2.setBackgroundColor(rect2ColorNew);
+                    // Change color differently for each rectangle
+                    if (i == 0) {
+                        // Black -> White
+                        // Gradually convert black to white by changing the V in HSV
+                        rectHSV[2] = (float) (progress * 0.01);
 
-                /* Magenta
-                Same as before but the initial colors change in hue (H) proportional to the change
-                in the seekBar
-                */
-                float[] rect3HSV = {0, 0, 0};
-                Color.colorToHSV(rect3Color, rect3HSV);
-                rect3HSV[0] = (float) (rect3HSV[0] + progress * 0.5) % 360;
-                int rect3ColorNew = Color.HSVToColor(rect3HSV);
-                rect3.setBackgroundColor(rect3ColorNew);
+                    } else if (i == 1) {
+                        // White -> Black
+                        // Same as before but in reverse
+                        rectHSV[2] = (float) (1.0 - progress * 0.01);
 
-                // PurpleBlue
-                float[] rect4HSV = {0, 0, 0};
-                Color.colorToHSV(rect4Color, rect4HSV);
-                rect4HSV[0] = (float) (rect4HSV[0] - progress * 0.5) % 360;
-                int rect4ColorNew = Color.HSVToColor(rect4HSV);
-                rect4.setBackgroundColor(rect4ColorNew);
+                    } else if (i % 2 == 0) {
+                        // Rectangles in the left side of the screen
+                        // Same as before but the initial colors change in hue (H) proportional to
+                        // the change in the seekBar
+                        rectHSV[0] = (float) (rectHSV[0] + progress * 0.5) % 360;
 
-                // Blue
-                float[] rect5HSV = {0, 0, 0};
-                Color.colorToHSV(rect5Color, rect5HSV);
-                rect5HSV[0] = (float) (rect5HSV[0] + progress * 0.5) % 360;
-                int rect5ColorNew = Color.HSVToColor(rect5HSV);
-                rect5.setBackgroundColor(rect5ColorNew);
+                    } else {
+                        // Rectangles in the right side of the screen
+                        rectHSV[0] = (float) (rectHSV[0] - progress * 0.5) % 360;
+                    }
 
-                // BlueGreen
-                float[] rect6HSV = {0, 0, 0};
-                Color.colorToHSV(rect6Color, rect6HSV);
-                rect6HSV[0] = (float) (rect6HSV[0] - progress * 0.5) % 360;
-                int rect6ColorNew = Color.HSVToColor(rect6HSV);
-                rect6.setBackgroundColor(rect6ColorNew);
-
-                // Green
-                float[] rect7HSV = {0, 0, 0};
-                Color.colorToHSV(rect7Color, rect7HSV);
-                rect7HSV[0] = (float) (rect7HSV[0] + progress * 0.5) % 360;
-                int rect7ColorNew = Color.HSVToColor(rect7HSV);
-                rect7.setBackgroundColor(rect7ColorNew);
-
-                // GreenYellow
-                float[] rect8HSV = {0, 0, 0};
-                Color.colorToHSV(rect8Color, rect8HSV);
-                rect8HSV[0] = (float) (rect8HSV[0] - progress * 0.5) % 360;
-                int rect8ColorNew = Color.HSVToColor(rect8HSV);
-                rect8.setBackgroundColor(rect8ColorNew);
-
-                // Yellow
-                float[] rect9HSV = {0, 0, 0};
-                Color.colorToHSV(rect9Color, rect9HSV);
-                rect9HSV[0] = (float) (rect9HSV[0] + progress * 0.5) % 360;
-                int rect9ColorNew = Color.HSVToColor(rect9HSV);
-                rect9.setBackgroundColor(rect9ColorNew);
-
-                // Orange
-                float[] rect10HSV = {0, 0, 0};
-                Color.colorToHSV(rect10Color, rect10HSV);
-                rect10HSV[0] = (float) (rect10HSV[0] - progress * 0.5) % 360;
-                int rect10ColorNew = Color.HSVToColor(rect10HSV);
-                rect10.setBackgroundColor(rect10ColorNew);
+                    // Convert HSV to Color again and set the new color as background of the Layout
+                    rectangles[i].setBackgroundColor(Color.HSVToColor(rectHSV));
+                }
             }
 
             @Override
